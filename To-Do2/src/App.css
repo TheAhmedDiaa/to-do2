@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+header {
+  text-align: center;
+  margin: auto;
+}
+
+b {
+  font-size: 2.5rem;
+}
+
+.eader {
+ padding-top: 30px;
+}
