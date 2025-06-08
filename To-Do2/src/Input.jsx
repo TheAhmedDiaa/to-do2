@@ -152,7 +152,6 @@ function Input() {
             showGradients={false}
             enableArrowNavigation={true}
             displayScrollbar={true}
-            className="list"
           />
         </ol>
       </div>
