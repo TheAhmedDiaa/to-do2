@@ -13,12 +13,9 @@ function Input() {
   function AddTask() {
     let newDate = document.getElementById("date").value;
     let newTask = document.getElementById("task").value;
-    let nowDate = new Date().toISOString().split("T")[0]
+    let nowDate = new Date().toISOString().split("T")[0];
 
-    if (
-      newTask.trim() == "" ||
-      new Date(newDate) < new Date(nowDate)
-    ) {
+    if (newTask.trim() == "" || new Date(newDate) < new Date(nowDate)) {
       setShowWarning(true);
       open();
       return;
@@ -102,6 +99,12 @@ function Input() {
                 <Button
                   className="inline-flex items-center gap-2 rounded-lg bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-gray-600 data-open:bg-gray-700"
                   onClick={close}
+                  autoFocus
+                  onKeyUp={(e) => {
+                    if (e.key === "Enter") {
+                      close();
+                    }
+                  }}
                 >
                   Got it, thanks!
                 </Button>
@@ -115,6 +118,7 @@ function Input() {
           id="task"
           type="text"
           placeholder="Add a task..."
+          autoFocus
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               AddTask();
