@@ -12,18 +12,21 @@ function Input() {
   function AddTask() {
     let newDate = document.getElementById("date").value;
     let newTask = document.getElementById("task").value;
+    let newTime = document.getElementById("time").value;
     let todayDate = new Date().toISOString().split("T")[0];
 
-    console.log(document.getElementById("time").value);
-    console.log(new Date().toISOString());
-    if (newTask.trim() == "" || new Date(newDate) < new Date(todayDate)) {
+    if (
+      newTask.trim() == "" ||
+      new Date(newDate) < new Date(todayDate) ||
+      newTime < new Date().toISOString().split("T")[1].split(".")[0]
+    ) {
       open();
       return;
     }
 
     document.getElementById("task").value = "";
 
-    setTasks((t) => [...t, { text: newTask, date: newDate }]);
+    setTasks((t) => [...t, { text: newTask, date: newDate, time: newTime }]);
   }
 
   function removeTask(index) {
@@ -199,7 +202,7 @@ function Input() {
             items={tasks.map((task, i) => (
               <li key={i}>
                 <div ref={containerRef} style={{ position: "relative" }}>
-                  {task.text} in {task.date} at
+                  {task.text} in {task.date} at {task.time}
                 </div>
                 <button onClick={() => removeTask(i)}>Remove</button>
                 <button onClick={() => taskUp(i)}>👆</button>
