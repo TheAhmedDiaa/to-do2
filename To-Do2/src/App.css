@@ -3,6 +3,7 @@
 header {
   text-align: center;
   margin: auto;
+  color: hsl(0, 0%, 95%);
 }
 
 b {
@@ -10,5 +11,5 @@ b {
 }
 
 .eader {
- padding-top: 30px;
+  padding-top: 30px;
 }

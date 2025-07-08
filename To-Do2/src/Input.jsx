@@ -12,9 +12,11 @@ function Input() {
   function AddTask() {
     let newDate = document.getElementById("date").value;
     let newTask = document.getElementById("task").value;
-    let nowDate = new Date().toISOString().split("T")[0];
+    let todayDate = new Date().toISOString().split("T")[0];
 
-    if (newTask.trim() == "" || new Date(newDate) < new Date(nowDate)) {
+    console.log(document.getElementById("time").value);
+    console.log(new Date().toISOString());
+    if (newTask.trim() == "" || new Date(newDate) < new Date(todayDate)) {
       open();
       return;
     }
@@ -120,7 +122,7 @@ function Input() {
           </div>
         </div>
       </Dialog>
-            <Dialog
+      <Dialog
         open={isTaskOpen}
         as="div"
         className="relative z-10 focus:outline-none"
@@ -139,7 +141,7 @@ function Input() {
                 Something is wrong
               </DialogTitle>
               <p className="mt-2 text-sm/6 text-white/50">
-                Your task is already on the top or the bottom 😊
+                Your task is already on the far top or the far bottom 😊
               </p>
               <div className="mt-4">
                 <Button
@@ -176,6 +178,11 @@ function Input() {
           type="date"
           defaultValue={new Date().toISOString().split("T")[0]}
         />
+        <input
+          id="time"
+          type="time"
+          defaultValue={new Date().toISOString().split("T")[1].split(".")[0]}
+        ></input>
         <StarPorder
           as="button"
           className="custom-class"
