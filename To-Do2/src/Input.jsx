@@ -8,6 +8,7 @@ function Input() {
   const containerRef = useRef(null);
 
   let [tasks, setTasks] = useState([]);
+  let [done, setDone] = useState(false);
 
   function AddTask() {
     let newDate = document.getElementById("date").value;
@@ -21,6 +22,11 @@ function Input() {
       newTime < new Date().toISOString().split("T")[1].split(".")[0]
     ) {
       open();
+      console.log(
+        `${newDate}, ${todayDate}, ${newTime}, ${
+          new Date().toISOString().split("T")[1].split(".")[0]
+        }`
+      );
       return;
     }
 
@@ -62,6 +68,14 @@ function Input() {
     newTasks[index + 1] = thisTask;
 
     setTasks(newTasks);
+  }
+
+  function taskDone(index) {
+    setDone(prev => !prev);
+
+    let doneTask = document.getElementById(`task-${index}`);
+    doneTask.style.textDecorationLine = done ? "line-through" : "none";
+    doneTask.style.color = done ? "hsl(0 0% 70%)" : "white";
   }
 
   let [isOpen, setIsOpen] = useState(false);
@@ -201,12 +215,17 @@ function Input() {
           <AnimatedList
             items={tasks.map((task, i) => (
               <li key={i}>
-                <div ref={containerRef} style={{ position: "relative" }}>
+                <div
+                  id={"task-" + i}
+                  ref={containerRef}
+                  style={{ position: "relative" }}
+                >
                   {task.text} in {task.date} at {task.time}
                 </div>
                 <button onClick={() => removeTask(i)}>Remove</button>
                 <button onClick={() => taskUp(i)}>👆</button>
                 <button onClick={() => taskDown(i)}>👇</button>
+                <button onClick={() => taskDone(i)}>Done</button>
               </li>
             ))}
             showGradients={false}
