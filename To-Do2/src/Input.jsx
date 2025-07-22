@@ -13,18 +13,18 @@ function Input() {
     let newDate = document.getElementById("date").value;
     let newTask = document.getElementById("task").value;
     let newTime = document.getElementById("time").value;
-    let todayDate = new Date().toISOString().split("T")[0];
+    let todayDate = new Date().toTimeString().split(" ")[0];
     let id = tasks.length;
 
     if (
       newTask.trim() == "" ||
       new Date(newDate) < new Date(todayDate) ||
-      newTime < new Date().toISOString().split("T")[1].split(".")[0]
+      newTime < new Date().toTimeString().split(" ")[0]
     ) {
       open();
       console.log(
         `${newDate}, ${todayDate}, ${newTime}, ${
-          new Date().toISOString().split("T")[1].split(".")[0]
+          new Date().toTimeString().split(" ")[0]
         }`
       );
       return;
@@ -201,7 +201,11 @@ function Input() {
         <input
           id="time"
           type="time"
-          defaultValue={new Date().toISOString().split("T")[1].split(".")[0]}
+          defaultValue={new Date().toLocaleTimeString("en-US", {
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
         ></input>
         <StarPorder
           as="button"
