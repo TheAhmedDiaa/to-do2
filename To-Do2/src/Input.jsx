@@ -8,13 +8,13 @@ function Input() {
   const containerRef = useRef(null);
 
   let [tasks, setTasks] = useState([]);
-  let [done, setDone] = useState(false);
 
   function AddTask() {
     let newDate = document.getElementById("date").value;
     let newTask = document.getElementById("task").value;
     let newTime = document.getElementById("time").value;
     let todayDate = new Date().toISOString().split("T")[0];
+    let id = tasks.length;
 
     if (
       newTask.trim() == "" ||
@@ -32,7 +32,10 @@ function Input() {
 
     document.getElementById("task").value = "";
 
-    setTasks((t) => [...t, { text: newTask, date: newDate, time: newTime }]);
+    setTasks((t) => [
+      ...t,
+      { text: newTask, date: newDate, time: newTime, id: id, done: false },
+    ]);
   }
 
   function removeTask(index) {
@@ -70,12 +73,12 @@ function Input() {
     setTasks(newTasks);
   }
 
-  function taskDone(index) {
-    setDone(prev => !prev);
-
-    let doneTask = document.getElementById(`task-${index}`);
-    doneTask.style.textDecorationLine = done ? "line-through" : "none";
-    doneTask.style.color = done ? "hsl(0 0% 70%)" : "white";
+  function taskDone(id) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, done: !task.done } : task
+      )
+    );
   }
 
   let [isOpen, setIsOpen] = useState(false);
@@ -214,18 +217,23 @@ function Input() {
         <ol>
           <AnimatedList
             items={tasks.map((task, i) => (
-              <li key={i}>
+              <li key={task.id}>
                 <div
-                  id={"task-" + i}
+                  id={"task-" + task.id}
+                  className="task"
                   ref={containerRef}
-                  style={{ position: "relative" }}
+                  style={{
+                    position: "relative",
+                    textDecoration: task.done ? "line-through" : "none",
+                    color: task.done ? "hsl(0, 0%, 70%)" : "inherit",
+                  }}
                 >
                   {task.text} in {task.date} at {task.time}
                 </div>
                 <button onClick={() => removeTask(i)}>Remove</button>
                 <button onClick={() => taskUp(i)}>👆</button>
                 <button onClick={() => taskDown(i)}>👇</button>
-                <button onClick={() => taskDone(i)}>Done</button>
+                <button onClick={() => taskDone(task.id)}>Done</button>
               </li>
             ))}
             showGradients={false}

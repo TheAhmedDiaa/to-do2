@@ -65,3 +65,7 @@ button:active {
   text-align: center;
   justify-content: center;
 }
+
+.task {
+  transition: 0.5s ease;
+}
