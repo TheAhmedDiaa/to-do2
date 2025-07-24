@@ -36,11 +36,11 @@ ol {
 
 button {
   background-color: black;
-  color: white;
+  color: hsl(0, 0%, 70%);
   border: solid rgb(18, 18, 18) 2px;
   padding: 10px;
-  min-width: 5rem;
-  font-size: medium;
+  min-width: 4.5rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: border 0.5s;
 }
@@ -71,6 +71,7 @@ button:active {
 }
 
 #Tdate {
+  border-top: 1px solid hsl(0, 0%, 60%);
   display: flex;
   justify-content: space-between;
   color: hsl(0, 0%, 60%);
