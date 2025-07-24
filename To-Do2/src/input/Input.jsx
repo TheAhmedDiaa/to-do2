@@ -156,10 +156,14 @@ function Input() {
                   style={{
                     position: "relative",
                     textDecoration: task.done ? "line-through" : "none",
-                    color: task.done ? "hsl(0, 0%, 50%)" : "inherit",
+                    color: task.done ? "hsl(0, 0%, 50%)" : "hsl(0, 0%, 90%)",
                   }}
                 >
-                  {task.text} in {task.date} at {task.time}
+                  {task.text}
+                </div>
+                <div id="Tdate">
+                  <p>{task.date}</p>
+                  <p>{task.time}</p>
                 </div>
                 <button onClick={() => removeTask(i)}>Remove</button>
                 <button onClick={() => taskUp(i)}>👆</button>

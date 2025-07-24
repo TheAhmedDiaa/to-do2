@@ -46,7 +46,7 @@
 }
 
 .item-text {
-  color: white;
+  color: hsl(0, 0%, 90%);
   margin: 0;
 }
 
