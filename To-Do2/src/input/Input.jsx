@@ -1,8 +1,8 @@
 import "./Iinput.css";
 import { useState, useRef } from "react";
-import StarPorder from "./Animations/StarBorder/StarBorder";
-import AnimatedList from "./Components/AnimatedList/AnimatedList";
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import StarPorder from "../Animations/StarBorder/StarBorder";
+import AnimatedList from "../Components/AnimatedList/AnimatedList";
+import DialogModel from "../dialog/DialogModel";
 
 function Input() {
   const containerRef = useRef(null);
@@ -16,11 +16,7 @@ function Input() {
     let todayDate = new Date().toTimeString().split(" ")[0];
     let id = tasks.length;
 
-    if (
-      newTask.trim() == "" ||
-      new Date(newDate) < new Date(todayDate) ||
-      newTime < new Date().toTimeString().split(" ")[0]
-    ) {
+    if (newTask.trim() == "" || new Date(newDate) < new Date(todayDate)) {
       open();
       console.log(
         `${newDate}, ${todayDate}, ${newTime}, ${
@@ -102,85 +98,16 @@ function Input() {
 
   return (
     <>
-      <Dialog
-        open={isOpen}
-        as="div"
-        className="relative z-10 focus:outline-none"
-        onClose={close}
-      >
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4">
-            <DialogPanel
-              transition
-              className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
-            >
-              <DialogTitle
-                as="h3"
-                className="text-base/7 font-medium text-white"
-              >
-                Something is wrong
-              </DialogTitle>
-              <p className="mt-2 text-sm/6 text-white/50">
-                Check if the date and the time is valid and you added the task
-                name please 😊
-              </p>
-              <div className="mt-4">
-                <Button
-                  className="inline-flex items-center gap-2 rounded-lg bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-gray-600 data-open:bg-gray-700"
-                  onClick={close}
-                  autoFocus
-                  onKeyUp={(e) => {
-                    if (e.key === "Enter") {
-                      close();
-                    }
-                  }}
-                >
-                  Got it, thanks!
-                </Button>
-              </div>
-            </DialogPanel>
-          </div>
-        </div>
-      </Dialog>
-      <Dialog
-        open={isTaskOpen}
-        as="div"
-        className="relative z-10 focus:outline-none"
-        onClose={closeTask}
-      >
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4">
-            <DialogPanel
-              transition
-              className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
-            >
-              <DialogTitle
-                as="h3"
-                className="text-base/7 font-medium text-white"
-              >
-                Something is wrong
-              </DialogTitle>
-              <p className="mt-2 text-sm/6 text-white/50">
-                Your task is already on the far top or the far bottom 😊
-              </p>
-              <div className="mt-4">
-                <Button
-                  className="inline-flex items-center gap-2 rounded-lg bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-gray-600 data-open:bg-gray-700"
-                  onClick={closeTask}
-                  autoFocus
-                  onKeyUp={(e) => {
-                    if (e.key === "Enter") {
-                      closeTask();
-                    }
-                  }}
-                >
-                  Got it, thanks!
-                </Button>
-              </div>
-            </DialogPanel>
-          </div>
-        </div>
-      </Dialog>
+      <DialogModel
+        isOpen={isOpen}
+        close={close}
+        message="Check if the date and the time is valid and you added the task name please 😊"
+      />
+      <DialogModel
+        isOpen={isTaskOpen}
+        close={closeTask}
+        message="Your task is already on the far top or the far bottom 😊"
+      />
       <div className="inputs">
         <input
           id="task"
@@ -229,7 +156,7 @@ function Input() {
                   style={{
                     position: "relative",
                     textDecoration: task.done ? "line-through" : "none",
-                    color: task.done ? "hsl(0, 0%, 70%)" : "inherit",
+                    color: task.done ? "hsl(0, 0%, 50%)" : "inherit",
                   }}
                 >
                   {task.text} in {task.date} at {task.time}

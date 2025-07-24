@@ -36,13 +36,13 @@
 
 .item {
   padding: 16px;
-  background-color: #111;
+  background-color: hsl(0, 0%, 5%);
   border-radius: 8px;
   margin-bottom: 1rem;
 }
 
 .item.selected {
-  background-color: #222;
+  background-color: hsl(0, 0%, 10%);
 }
 
 .item-text {

@@ -1,6 +1,6 @@
 import "./App.css";
 import SplitText from "./Components/SplitText/SplitText";
-import Input from "./Input";
+import Input from "./Input/Input.jsx";
 
 function App() {
   return (
