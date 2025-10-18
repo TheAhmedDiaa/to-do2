@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { DialogContext } from "./DialogProvider.jsx";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const TasksContext = createContext(null);
 
 export default function TasksProvider({ children }) {
