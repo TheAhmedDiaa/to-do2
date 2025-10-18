@@ -1,133 +1,44 @@
 import "./Iinput.css";
-import { useState, useRef } from "react";
+import { useRef, useContext, useState } from "react";
+import { TasksContext } from "../Context/TasksProvider.jsx";
 import StarPorder from "../Animations/StarBorder/StarBorder";
 import AnimatedList from "../Components/AnimatedList/AnimatedList";
-import DialogModel from "../dialog/DialogModel";
 
 function Input() {
   const containerRef = useRef(null);
 
-  let [tasks, setTasks] = useState([]);
+  const { tasks, AddTask, RemoveTask, TaskUp, TaskDown, CompleteTask } = useContext(TasksContext);
 
-  function AddTask() {
-    let newDate = document.getElementById("date").value;
-    let newTask = document.getElementById("task").value;
-    let newTime = document.getElementById("time").value;
-    let todayDate = new Date().toTimeString().split(" ")[0];
-    let id = tasks.length;
-
-    if (newTask.trim() == "" || new Date(newDate) < new Date(todayDate)) {
-      open();
-      console.log(
-        `${newDate}, ${todayDate}, ${newTime}, ${
-          new Date().toTimeString().split(" ")[0]
-        }`
-      );
-      return;
-    }
-
-    document.getElementById("task").value = "";
-
-    setTasks((t) => [
-      ...t,
-      { text: newTask, date: newDate, time: newTime, id: id, done: false },
-    ]);
-  }
-
-  function removeTask(index) {
-    setTasks(tasks.filter((_, i) => i !== index));
-    console.log(tasks);
-  }
-
-  function taskUp(index) {
-    let newTasks = [...tasks];
-    let thisTask = tasks[index];
-    let previousTask = tasks[index - 1];
-    if (!previousTask) {
-      openTask();
-      return;
-    }
-
-    newTasks[index] = previousTask;
-    newTasks[index - 1] = thisTask;
-
-    setTasks(newTasks);
-  }
-
-  function taskDown(index) {
-    let newTasks = [...tasks];
-    let thisTask = tasks[index];
-    let nextTask = tasks[index + 1];
-    if (!nextTask) {
-      openTask();
-      return;
-    }
-
-    newTasks[index] = nextTask;
-    newTasks[index + 1] = thisTask;
-
-    setTasks(newTasks);
-  }
-
-  function taskDone(id) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
-    );
-  }
-
-  let [isOpen, setIsOpen] = useState(false);
-  let [isTaskOpen, setIsTaskOpen] = useState(false);
-
-  function open() {
-    setIsOpen(true);
-  }
-
-  function close() {
-    setIsOpen(false);
-  }
-
-  function openTask() {
-    setIsTaskOpen(true);
-  }
-
-  function closeTask() {
-    setIsTaskOpen(false);
-  }
+  const [taskText, setTaskText] = useState("");
+  const [taskDate, setTaskDate] = useState("");
+  const [taskTime, setTaskTime] = useState("");
 
   return (
     <>
-      <DialogModel
-        isOpen={isOpen}
-        close={close}
-        message="Check if the date and the time is valid and you added the task name please 😊"
-      />
-      <DialogModel
-        isOpen={isTaskOpen}
-        close={closeTask}
-        message="Your task is already on the far top or the far bottom 😊"
-      />
-      <div className="inputs">
+      <section className="inputs">
         <input
           id="task"
           type="text"
           placeholder="Add a task..."
           autoFocus
+          value={taskText}
+          onChange={(e) => setTaskText(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === "Enter") {
-              AddTask();
+              AddTask(taskDate, taskText, taskTime);
             }
           }}
         />
         <input
           id="date"
           type="date"
+          onChange={(e) => setTaskDate(e.target.value)}
           defaultValue={new Date().toISOString().split("T")[0]}
         />
         <input
           id="time"
           type="time"
+          onChange={(e) => setTaskTime(e.target.value)}
           defaultValue={new Date().toLocaleTimeString("en-US", {
             hour12: false,
             hour: "2-digit",
@@ -139,11 +50,11 @@ function Input() {
           className="custom-class"
           color="cyan"
           speed="5s"
-          onClick={AddTask}
+          onClick={() => AddTask(taskDate, taskText, taskTime)}
         >
           Add
         </StarPorder>
-      </div>
+      </section>
       <div className="tasks">
         <ol>
           <AnimatedList
@@ -165,10 +76,10 @@ function Input() {
                   <p>{task.date}</p>
                   <p>{task.time}</p>
                 </div>
-                <button onClick={() => removeTask(i)}>Remove</button>
-                <button onClick={() => taskUp(i)}>👆</button>
-                <button onClick={() => taskDown(i)}>👇</button>
-                <button onClick={() => taskDone(task.id)}>Done</button>
+                <button onClick={() => RemoveTask(task.id)}>Remove</button>
+                <button onClick={() => TaskUp(i)}>👆</button>
+                <button onClick={() => TaskDown(i)}>👇</button>
+                <button onClick={() => CompleteTask(task.id)}>Done</button>
               </li>
             ))}
             showGradients={false}
