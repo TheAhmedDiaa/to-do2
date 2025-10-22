@@ -4,12 +4,19 @@ import { TasksContext } from "../Context/TasksProvider.jsx";
 import StarPorder from "../Animations/StarBorder/StarBorder";
 
 function Input() {
-
-  const { AddTask} = useContext(TasksContext);
+  const { AddTask } = useContext(TasksContext);
 
   const [taskText, setTaskText] = useState("");
-  const [taskDate, setTaskDate] = useState("");
-  const [taskTime, setTaskTime] = useState("");
+  const [taskDate, setTaskDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [taskTime, setTaskTime] = useState(
+    new Date().toLocaleTimeString("en-US", {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+  );
 
   return (
     <>
@@ -24,6 +31,7 @@ function Input() {
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               AddTask(taskDate, taskText, taskTime);
+              setTaskText("");
             }
           }}
         />
@@ -31,24 +39,23 @@ function Input() {
           id="date"
           type="date"
           onChange={(e) => setTaskDate(e.target.value)}
-          defaultValue={new Date().toISOString().split("T")[0]}
+          defaultValue={taskDate}
         />
         <input
           id="time"
           type="time"
           onChange={(e) => setTaskTime(e.target.value)}
-          defaultValue={new Date().toLocaleTimeString("en-US", {
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          defaultValue={taskTime}
         ></input>
         <StarPorder
           as="button"
           className="custom-class"
           color="cyan"
           speed="5s"
-          onClick={() => AddTask(taskDate, taskText, taskTime)}
+          onClick={() => {
+            AddTask(taskDate, taskText, taskTime);
+            setTaskText("");
+          }}
         >
           Add
         </StarPorder>
